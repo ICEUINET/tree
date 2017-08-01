@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+	<meta charset="UTF-8">
+	<title>树形菜单</title>
+	<style>
+		body{font-family: "微软雅黑";}
+		*{margin:0;padding:0}
+		#tree p{list-style:none;cursor:pointer;}
+		#tree ul {margin-left: 20px;}
+		#tree li{list-style:none;cursor:pointer;}
+	</style>
+</head>
+<body>
+<ul id="tree">
+	<li>
+		<p>我是第一级</p>
+		<ul>
+			<li>
+				<p>我是第二级</p>
+				<ul>
+					<li>
+						<p>我是第三级</p>
+						<ul>
+							<li>
+								<p>我是第四级</p>
+								<ul>
+									<li><p>我是第五级</p></li>
+									<li><p>我是第五级</p></li>
+									<li><p>我是第五级</p></li>
+									<li><p>我是第五级</p></li>
+								</ul>
+							</li>
+						</ul>
+					</li>
+				</ul>
+			</li>
+			<li>
+				<p>我是第二级</p>
+				<ul>
+					<li>我是第三级</li>
+					<li>我是第三级</li>
+					<li>我是第三级</li>
+					<li>我是第三级</li>
+				</ul>
+			</li>
+			<li>
+				<p>我是第二级</p>
+				<ul>
+					<li>我是第三级</li>
+					<li>我是第三级</li>
+					<li>我是第三级</li>
+					<li>我是第三级</li>
+				</ul>
+			</li>
+		</ul>
+	</li>
+	<li>
+		<p>我是第一级</p>
+		<ul>
+			<li>
+				<p>我是第二级</p>
+				<ul>
+					<li>我是第三级</li>
+					<li>我是第三级</li>
+					<li>我是第三级</li>
+					<li>我是第三级</li>
+				</ul>
+			</li>
+			<li>
+				<p>我是第二级</p>
+				<ul>
+					<li>我是第三级</li>
+					<li>我是第三级</li>
+					<li>我是第三级</li>
+					<li>我是第三级</li>
+				</ul>
+			</li>
+			<li>
+				<p>我是第二级</p>
+				<ul>
+					<li>我是第三级</li>
+					<li>我是第三级</li>
+					<li>我是第三级</li>
+					<li>我是第三级</li>
+				</ul>
+			</li>
+		</ul>
+	</li>
+</ul>
+<script>
+//作者：ICE
+//网址：www.iceui.net
+tree('tree');
+function tree(id){
+	var p=document.getElementById(id).getElementsByTagName('p');
+	for(var i=0;i<p.length;i++){
+	
+		//获取下一个兄弟节点
+		if(p[i].nextSibling!=null){
+			var obj=p[i].nextSibling;
+			while(true){
+				if(obj!=null){
+				
+					//查找标签为ul的下级菜单
+					if(obj.tagName=='UL'){
+						obj.style.display="none";
+						
+						//给拥有下级菜单的菜单添加样式标识
+						p[i].className="popupMenu";
+						p[i].className="close";
+						p[i].i=obj;
+						
+						//给拥有下级菜单的菜单添加点击弹出事件
+						p[i].onclick=function(){
+							if(this.i.style.display=="none"){
+								this.i.style.display="block";
+								this.className="open";
+							}else{
+								this.i.style.display="none";
+								this.className="close";
+							}
+						}
+						break;
+					}
+				}else{
+					break;
+				}
+				obj=obj.nextSibling;
+			}
+		}
+	}
+}
+</script>
+</body>
+</html>
