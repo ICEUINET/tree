@@ -13,6 +13,7 @@
 </head>
 <body>
 <div id="tree">
+/*这是模拟的静态树形菜单，必须为这种格式，为空的话可传入Json数据，将自动格式化为html格式，并会自动传入本容器中*/
 <ul>
 	<li>
 		<a href="#">我是第一级</a>
@@ -123,7 +124,7 @@
 	
 	//id:形成树形菜单的容器
 	//json:树形菜单的json数据，也可以为字符串格式的json数据或者，为空将自动格式化该id容器的静态树形菜单
-	//open:属性菜单的全部展开收缩开关，默认为全部收缩
+	//open:树形菜单的是否全部展开，默认为全部收缩，可为空
 	function tree(id,json,open){
 		json=json || false;
 		open=open || false;
