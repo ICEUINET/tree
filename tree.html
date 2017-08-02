@@ -2,7 +2,7 @@
 <html lang="zh-cn">
 <head>
 	<meta charset="UTF-8">
-	<title>树形菜单</title>
+	<title>树形菜单（高级）</title>
 	<style>
 		body{font-family: "微软雅黑";}
 		*{margin:0;padding:0}
@@ -12,23 +12,24 @@
 	</style>
 </head>
 <body>
-<ul id="tree">
+<div id="tree">
+<ul>
 	<li>
-		<p>我是第一级</p>
+		<a href="#">我是第一级</a>
 		<ul>
 			<li>
-				<p>我是第二级</p>
+				<a href="#">我是第二级</a>
 				<ul>
 					<li>
-						<p>我是第三级</p>
+						<a href="#">我是第三级</a>
 						<ul>
 							<li>
-								<p>我是第四级</p>
+								<a href="#">我是第四级</a>
 								<ul>
-									<li><p>我是第五级</p></li>
-									<li><p>我是第五级</p></li>
-									<li><p>我是第五级</p></li>
-									<li><p>我是第五级</p></li>
+									<li><a href="#">我是第五级</a></li>
+									<li><a href="#">我是第五级</a></li>
+									<li><a href="#">我是第五级</a></li>
+									<li><a href="#">我是第五级</a></li>
 								</ul>
 							</li>
 						</ul>
@@ -36,7 +37,7 @@
 				</ul>
 			</li>
 			<li>
-				<p>我是第二级</p>
+				<a href="#">我是第二级</a>
 				<ul>
 					<li>我是第三级</li>
 					<li>我是第三级</li>
@@ -45,7 +46,7 @@
 				</ul>
 			</li>
 			<li>
-				<p>我是第二级</p>
+				<a href="#">我是第二级</a>
 				<ul>
 					<li>我是第三级</li>
 					<li>我是第三级</li>
@@ -56,10 +57,10 @@
 		</ul>
 	</li>
 	<li>
-		<p>我是第一级</p>
+		<a href="#">我是第一级</a>
 		<ul>
 			<li>
-				<p>我是第二级</p>
+				<a href="#">我是第二级</a>
 				<ul>
 					<li>我是第三级</li>
 					<li>我是第三级</li>
@@ -68,7 +69,7 @@
 				</ul>
 			</li>
 			<li>
-				<p>我是第二级</p>
+				<a href="#">我是第二级</a>
 				<ul>
 					<li>我是第三级</li>
 					<li>我是第三级</li>
@@ -77,7 +78,7 @@
 				</ul>
 			</li>
 			<li>
-				<p>我是第二级</p>
+				<a href="#">我是第二级</a>
 				<ul>
 					<li>我是第三级</li>
 					<li>我是第三级</li>
@@ -88,49 +89,143 @@
 		</ul>
 	</li>
 </ul>
+</div>
 <script>
-//作者：ICE
-//网址：www.iceui.net
-tree('tree');
-function tree(id){
-	var p=document.getElementById(id).getElementsByTagName('p');
-	for(var i=0;i<p.length;i++){
+	//作者：ICE
+	//ＱＱ：550396509
+	//网址：www.iceui.net
 	
-		//获取下一个兄弟节点
-		if(p[i].nextSibling!=null){
-			var obj=p[i].nextSibling;
-			while(true){
-				if(obj!=null){
-				
-					//查找标签为ul的下级菜单
-					if(obj.tagName=='UL'){
-						obj.style.display="none";
-						
-						//给拥有下级菜单的菜单添加样式标识
-						p[i].className="popupMenu";
-						p[i].className="close";
-						p[i].i=obj;
-						
-						//给拥有下级菜单的菜单添加点击弹出事件
-						p[i].onclick=function(){
-							if(this.i.style.display=="none"){
-								this.i.style.display="block";
-								this.className="open";
-							}else{
-								this.i.style.display="none";
-								this.className="close";
+	//模拟数据
+	var json = [
+		{"id":"1","pid":"0","name":"电脑","url":"#"},
+		{"id":"2","pid":"0","name":"手机","url":"#"},
+		{"id":"3","pid":"0","name":"平板","url":"#"},
+		{"id":"4","pid":"1","name":"品牌","url":"#"},
+		{"id":"5","pid":"1","name":"型号","url":"#"},
+		{"id":"6","pid":"2","name":"版本","url":"#"},
+		{"id":"7","pid":"2","name":"内存","url":"#"},
+		{"id":"8","pid":"3","name":"大小","url":"#"},
+		{"id":"9","pid":"3","name":"配置","url":"#"},
+		{"id":"10","pid":"4","name":"苹果","url":"#"},
+		{"id":"11","pid":"4","name":"华硕","url":"#"},
+		{"id":"12","pid":"5","name":"i5-CPU","url":"#"},
+		{"id":"13","pid":"5","name":"i7-CPU","url":"#"},
+		{"id":"14","pid":"6","name":"移动版","url":"#"},
+		{"id":"15","pid":"6","name":"联通版","url":"#"},
+		{"id":"16","pid":"7","name":"4G+64G","url":"#"},
+		{"id":"17","pid":"7","name":"4G+128G","url":"#"},
+		{"id":"18","pid":"8","name":"13.3寸","url":"#"},
+		{"id":"19","pid":"8","name":"15.5寸","url":"#"},
+		{"id":"20","pid":"9","name":"256G","url":"#"},
+		{"id":"21","pid":"9","name":"512G","url":"#"},
+		{"id":"22","pid":"0","name":"电视","url":"#"}
+	];
+	
+	//id:形成树形菜单的容器
+	//json:树形菜单的json数据，也可以为字符串格式的json数据或者，为空将自动格式化该id容器的静态树形菜单
+	//open:属性菜单的全部展开收缩开关，默认为全部收缩
+	function tree(id,json,open){
+		json=json || false;
+		open=open || false;
+		if(json){
+			//判断json的数据是否为字符串
+			if(Object.prototype.toString.call(json) === "[object String]"){
+				var list = eval("(" + json + ")");
+			}else{
+				var list = json;
+			}
+			
+			//格式化数据，如果pid等于id，将pid的数据放入父级id的children中
+			var data=new Array;
+			for (var k in list) {
+				data[list[k].id]=list[k];
+				data[list[k].id]['children']=[];
+			}
+			for (var k in data) {
+				if(data[k].pid!=0){
+					data[data[k].pid].children[k]=data[k];
+				}
+			}
+			
+			//无限递归函数，将所有的children取出来
+			function listdata(data){
+				var html='';
+				while(true){
+					if(data.length>0){
+						html+="<ul>";
+						for(var k in data){
+							html += '<li><a href="' + data[k].url + '">' + data[k].name + '</a>';
+							if(data[k].children.length>0){
+								html+=listdata(data[k].children);
 							}
 						}
+						html+="</ul>";
+						break;
+					}else{
 						break;
 					}
-				}else{
-					break;
 				}
-				obj=obj.nextSibling;
+				return html;
+			}
+			
+			//最终输出html格式数据
+			var html='';
+			html += '<ul>';
+			for(var k in data){
+				if(data[k].pid==0){
+					html += '<li><a href="' + data[k].url + '">' + data[k].name + '</a>';
+					html += listdata(data[k].children);
+					html += '</li>';
+				}
+			}
+			html += '</ul>';
+			document.getElementById(id).innerHTML=html;
+		}
+		
+		//将html数据二次处理，并添加样式和点击事件
+		var p=document.getElementById(id).getElementsByTagName('a');
+		for(var i=0;i<p.length;i++){
+		
+			//获取下一个兄弟节点
+			if(p[i].nextSibling!=null){
+				var obj=p[i].nextSibling;
+				while(true){
+					if(obj!=null){
+					
+						//查找标签为ul的下级菜单
+						if(obj.tagName=='UL'){
+							
+							obj.style.display=open?"block":"none";
+							
+							//给拥有下级菜单的菜单添加样式标识
+							p[i].className="popupMenu";
+							p[i].className="close";
+							p[i].i=obj;
+							
+							//给拥有下级菜单的菜单添加点击弹出事件
+							p[i].onclick=function(){
+								if(this.i.style.display=="none"){
+									this.i.style.display="block";
+									this.className="open";
+								}else{
+									this.i.style.display="none";
+									this.className="close";
+								}
+								return false;
+							}
+							break;
+						}
+					}else{
+						break;
+					}
+					obj=obj.nextSibling;
+				}
 			}
 		}
 	}
-}
+	
+	//将传入的数据格式化为树形菜单
+	tree('tree',json);
 </script>
 </body>
 </html>
